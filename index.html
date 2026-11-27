@@ -136,6 +136,20 @@ form{max-width:620px;margin:0 auto;padding:44px 40px;background:rgba(255,255,255
 .about .poem{writing-mode:vertical-rl;margin:0 auto;height:380px;font-size:16px;line-height:2.8;letter-spacing:.3em;max-width:100%;overflow-x:auto}
 footer{background:#1b3038;color:#9fb1b4;text-align:center;font-size:11px;letter-spacing:.3em;padding:36px 0 46px;line-height:2.4}
 footer .mock{display:inline-block;margin-top:8px;border:1px solid #5b7378;padding:0 10px;font-size:10px}
+/* 季節の切り替え */
+.season-switch{font:inherit;font-size:12px;letter-spacing:.08em;color:inherit;background:rgba(247,240,227,.85);border:1px solid var(--line);border-radius:999px;padding:5px 12px;max-width:145px}
+.hero{transition:background 1s}
+body[data-season="summer"] .hero{background:linear-gradient(#88b9d3,#d6e3c5 58%,#72996d)}
+body[data-season="autumn"] .hero{background:linear-gradient(#17283e,#34465d 55%,#594c49)}
+body[data-season="festival"] .hero{background:linear-gradient(#36364e,#86606a 65%,#463c42)}
+body[data-season="autumn"] .hero-title,body[data-season="autumn"] .hero-sub,body[data-season="festival"] .hero-title,body[data-season="festival"] .hero-sub{color:#f5e5cf;text-shadow:0 2px 20px #20202a}
+body[data-season="autumn"] header:not(.scrolled),body[data-season="festival"] header:not(.scrolled){color:#f5e5cf}
+body[data-season="autumn"] header:not(.scrolled) .logo small,body[data-season="festival"] header:not(.scrolled) .logo small{color:#e6d5be}
+body[data-season="autumn"] .cloud,body[data-season="festival"] .cloud{opacity:.12}
+body[data-season="autumn"] .sun,body[data-season="festival"] .sun{display:none}
+body[data-season="summer"] .sun{top:24%;left:26%}
+@media(max-width:720px){nav{gap:6px}.logo small{display:none}.logo{font-size:13px;letter-spacing:.1em}.season-switch{max-width:108px;padding:4px;font-size:11px}.sound-btn{padding:4px 8px;font-size:11px;letter-spacing:0}header{gap:6px}}
+@media(prefers-reduced-motion:reduce){.hero-title,.hero-sub,.hero-lead{animation:none;opacity:1}}
 </style>
 </head>
 <body>
@@ -146,6 +160,7 @@ footer .mock{display:inline-block;margin-top:8px;border:1px solid #5b7378;paddin
     <a href="#letters">流れ着いた手紙</a>
     <a href="#send">手紙を流す</a>
     <a href="#about">このサイトについて</a>
+    <select class="season-switch" id="seasonSelect" aria-label="思い出の風景を選ぶ"><option value="sea">夕暮れの海</option><option value="summer">夏の午後</option><option value="autumn">秋の夜</option><option value="festival">夏祭り</option></select>
     <button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="bars"><i></i><i></i><i></i></span><span id="soundLabel">潮騒</span></button>
   </nav>
 </header>
@@ -386,6 +401,7 @@ const layers = [
 ];
 function draw(t){
   t /= 1000; cx.clearRect(0,0,W,H);
+  if (season !== 'sea') { drawSeason(t); requestAnimationFrame(draw); return; }
   const hz = H*.62, sea = H-hz, sunX = W*.58;
   // 夕日の照り返し
   for (let k=0;k<26;k++){ const y = hz+4+k*k*.5; if (y>H) break; const w = (14+k*3.2)*(.6+.4*Math.sin(t*1.6+k));
@@ -411,12 +427,45 @@ function draw(t){
 requestAnimationFrame(draw);
 
 /* --- ふわりと漂うことば --- */
-const words = ["ひぐらし","麦茶","風鈴","夕立","ソーダ味","線香花火","防波堤","ラジオ体操","入道雲","貝殻"];
+let words = ["ひぐらし","麦茶","風鈴","夕立","ソーダ味","線香花火","防波堤","ラジオ体操","入道雲","貝殻"];
 const hero = document.querySelector('.hero');
 setInterval(() => { if (scrollY > innerHeight) return; const w = document.createElement('span'); w.className='floating-word'; w.textContent = words[Math.random()*words.length|0];
   w.style.left = (10+Math.random()*60)+'%'; w.style.top = (66+Math.random()*20)+'%'; hero.appendChild(w);
   w.animate([{opacity:0,transform:'translateY(0)'},{opacity:.85,offset:.3},{opacity:0,transform:'translateY(-60px)'}],{duration:7000,easing:'ease-out'}).onfinish=()=>w.remove(); }, 2600);
 
+/* --- 風景と音の切り替え --- */
+let season = 'sea';
+const themes = {
+  sea:{title:'あの夏の、潮騒',sound:'潮騒',sub:'遠いだれかの思い出が<br>波にのって、とどきます。',words:[...words]},
+  summer:{title:'あの日の、蝉時雨',sound:'蝉時雨',sub:'入道雲の向こうに<br>あの日の夏が、あります。',words:['蝉時雨','麦茶','縁側','入道雲','風鈴','夕立','青い空']},
+  autumn:{title:'秋夜の、鈴の音',sound:'鈴虫',sub:'月明かりの下で<br>遠い秋を、思い出す。',words:['鈴虫','月明かり','金木犀','すすき','秋風','帰り道']},
+  festival:{title:'あの夜の、祭囃子',sound:'祭囃子',sub:'提灯の灯りの向こうに<br>忘れられない夜が、あります。',words:['提灯','金魚すくい','浴衣','線香花火','太鼓','かき氷']}
+};
+function drawSeason(t){
+  const horizon=H*.67;
+  if(season==='autumn'){
+    cx.fillStyle='#f7e4b5';cx.beginPath();cx.arc(W*.30,H*.24,Math.min(W,H)*.045,0,Math.PI*2);cx.fill();
+    sparks.forEach((p,i)=>{cx.fillStyle='rgba(255,240,210,'+(.3+.3*Math.sin(t*.7+p.p))+')';cx.fillRect(p.x*W,p.y*H*.57,1.5,1.5)});
+  }
+  for(let j=0;j<3;j++){
+    cx.fillStyle=(season==='summer'?['#a1b58b','#72956b','#456b50']:season==='autumn'?['#465361','#35444d','#25373a']:['#63505a','#4b4149','#312f39'])[j];
+    cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W+12;x+=12)cx.lineTo(x,horizon+j*H*.105+Math.sin(x*.008+j*2)*H*.045+Math.sin(x*.019+j)*H*.012);cx.lineTo(W,H);cx.closePath();cx.fill();
+  }
+  if(season==='festival'){
+    cx.strokeStyle='#393039';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(0,H*.44);cx.quadraticCurveTo(W*.5,H*.57,W,H*.44);cx.stroke();
+    for(let i=0;i<9;i++){const x=W*(i+.5)/9,y=H*(.44+.065*Math.sin(Math.PI*x/W));const g=cx.createRadialGradient(x,y+12,2,x,y+12,30);g.addColorStop(0,'#ffd79a');g.addColorStop(1,'rgba(255,160,75,0)');cx.fillStyle=g;cx.fillRect(x-30,y-18,60,60);cx.fillStyle='#e9a46d';cx.beginPath();cx.ellipse(x,y+12,8,12,0,0,Math.PI*2);cx.fill();}
+  }else{
+    cx.strokeStyle=season==='summer'?'#476a45':'#8a8061';cx.lineWidth=1.2;
+    for(let i=0;i<42;i++){const x=i*W/41,h=25+(i%7)*8;cx.beginPath();cx.moveTo(x,H);cx.quadraticCurveTo(x+Math.sin(t*.9+i)*10,H-h*.55,x+Math.sin(t*.7+i)*15,H-h);cx.stroke();}
+  }
+}
+function setSeason(value){
+  if(!themes[value])return;
+  season=value;document.body.dataset.season=value;
+  const theme=themes[value];document.querySelector('.hero-title').textContent=theme.title;document.querySelector('.hero-sub').innerHTML=theme.sub;words=theme.words;
+  audio.switchScene();audio.labels();
+  try{localStorage.setItem('shiosai-season',value)}catch(e){}
+}
 /* --- 潮騒とオルゴール（その場で音を作っています） --- */
 const audio = { on:false, ctx:null, master:null, timer:null,
   init(){ const C = window.AudioContext||window.webkitAudioContext; if(!C) return false; const ctx = this.ctx = new C();
@@ -430,30 +479,58 @@ const audio = { on:false, ctx:null, master:null, timer:null,
     const wave = ctx.createGain(); wave.gain.value = .45;
     const lfo = ctx.createOscillator(); lfo.frequency.value = .11; const lfoG = ctx.createGain(); lfoG.gain.value = .38; lfo.connect(lfoG); lfoG.connect(wave.gain);
     const lfo2 = ctx.createOscillator(); lfo2.frequency.value = .11; const lfo2G = ctx.createGain(); lfo2G.gain.value = 500; lfo2.connect(lfo2G); lfo2G.connect(lp.frequency);
-    src.connect(lp); lp.connect(wave); wave.connect(this.master); src.start(); lfo.start(); lfo2.start();
+    this.seaGain=ctx.createGain();this.seaGain.gain.value=season==='sea'?1:0;this.seaGain.connect(this.master);
+    src.connect(lp); lp.connect(wave); wave.connect(this.seaGain); src.start(); lfo.start(); lfo2.start();
     // 遠くのメロディー：やまびこのように残るディレイ
     this.mel = ctx.createGain(); this.mel.gain.value = .14;
     const dl = ctx.createDelay(2); dl.delayTime.value = .62; const fb = ctx.createGain(); fb.gain.value = .45; const dlp = ctx.createBiquadFilter(); dlp.type='lowpass'; dlp.frequency.value = 1800;
-    this.mel.connect(this.master); this.mel.connect(dl); dl.connect(dlp); dlp.connect(fb); fb.connect(dl); dlp.connect(this.master);
+    this.mel.connect(this.seaGain); this.mel.connect(dl); dl.connect(dlp); dlp.connect(fb); fb.connect(dl); dlp.connect(this.seaGain);
     return true; },
   note(f, at, vol=1){ const ctx = this.ctx, o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
     o.type='sine'; o2.type='sine'; o.frequency.value=f; o2.frequency.value=f*2.01; const g2 = ctx.createGain(); g2.gain.value=.18;
     g.gain.setValueAtTime(0,at); g.gain.linearRampToValueAtTime(.5*vol,at+.01); g.gain.exponentialRampToValueAtTime(.0008,at+3.2);
     o.connect(g); o2.connect(g2); g2.connect(g); g.connect(this.mel); o.start(at); o2.start(at); o.stop(at+3.3); o2.stop(at+3.3); },
+  sceneNodes:[], sceneTimer:null, sceneBus:null,
+  stopScene(){clearTimeout(this.timer);clearTimeout(this.sceneTimer);if(this.sceneBus&&this.ctx){const bus=this.sceneBus,nodes=this.sceneNodes,t=this.ctx.currentTime;bus.gain.setTargetAtTime(0,t,.12);setTimeout(()=>{nodes.forEach(n=>{try{n.stop()}catch(e){}try{n.disconnect()}catch(e){}});bus.disconnect()},650)}this.sceneNodes=[];this.sceneBus=null;},
+  switchScene(){
+    if(!this.ctx)return;this.stopScene();const t=this.ctx.currentTime;this.seaGain.gain.setTargetAtTime(season==='sea'?1:0,t,.18);
+    if(!this.on)return;if(season==='sea'){this.phrase();return}
+    const ctx=this.ctx,bus=this.sceneBus=ctx.createGain();bus.gain.value=0;bus.connect(this.master);bus.gain.setTargetAtTime(.55,t,.25);
+    if(season==='summer'||season==='autumn'){
+      const duration=12,buf=ctx.createBuffer(2,ctx.sampleRate*duration,ctx.sampleRate);
+      for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<d.length;i++){const x=i/ctx.sampleRate;let v=0;for(let k=0;k<3;k++){
+        const phase=x*(season==='summer'?(.25+k*.083):(1.25+k*.25))+k*.27+ch*.08;
+        const env=season==='summer'?Math.pow(Math.max(0,Math.sin(phase*Math.PI*2)),2):Math.pow(Math.max(0,Math.sin(phase*Math.PI*2)),10);
+        const pulse=season==='summer'?(.4+.6*Math.pow(Math.sin(2*Math.PI*(27+k*3)*x),2)):(.25+.75*Math.pow(Math.sin(2*Math.PI*(19+k*2)*x),2));
+        const freq=season==='summer'?3200+k*550:3900+k*420;
+        v+=env*pulse*(season==='summer'?.65*Math.sin(2*Math.PI*freq*x)+.35*(Math.random()*2-1):Math.sin(2*Math.PI*freq*x)+.16*Math.sin(2*Math.PI*(freq+120)*x))*.065;
+      }d[i]=v*Math.min(1,x*15,(duration-x)*15)}}
+      const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;src.connect(bus);src.start();this.sceneNodes.push(src);
+    }else{
+      const hit=(freq,at,len,vol,type='sine',bend=false)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,at);if(bend)o.frequency.exponentialRampToValueAtTime(freq*.45,at+len*.8);g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(vol,at+.015);g.gain.exponentialRampToValueAtTime(.0001,at+len);o.connect(g);g.connect(bus);o.start(at);o.stop(at+len+.02);o.onended=()=>{o.disconnect();g.disconnect()}};
+      const beat=()=>{if(!this.on||season!=='festival'||this.sceneBus!==bus)return;const at=ctx.currentTime+.05;[0,.48,.96,1.2,1.68,2.16,2.64,2.88].forEach((d,i)=>hit(i%3===0?115:180,at+d,.24,i%3===0?.24:.12,'sine',true));[.24,.72,1.44,1.92,2.4,3.12].forEach(d=>hit(1250,at+d,.095,.035,'triangle'));[659.25,783.99,880,783.99,587.33,659.25].forEach((f,i)=>hit(f,at+i*.56,.47,.048,'triangle'));this.sceneTimer=setTimeout(beat,3360)};beat();
+    }
+  },
+  labels(){const name=themes[season].sound;document.body.classList.toggle('playing',this.on);document.getElementById('soundLabel').textContent=this.on?'停止':name;document.getElementById('heroSound').textContent=this.on?name+'を止める':name+'を聴く';document.getElementById('soundBtn').setAttribute('aria-pressed',String(this.on));},
   phrase(){ // ふるさとを思わせる、ヨナ抜き音階のゆるやかなフレーズ
     const sc = [523.25,587.33,659.25,783.99,880,1046.5]; let i = Math.random()*4|0, at = this.ctx.currentTime+.1;
     const n = 3+(Math.random()*3|0); for (let k=0;k<n;k++){ this.note(sc[i], at, .7+Math.random()*.3); at += .55+Math.random()*.5; i = Math.max(0,Math.min(sc.length-1, i+[-1,-1,1,1,2,-2][Math.random()*6|0])); }
     this.timer = setTimeout(()=>this.phrase(), (n*800)+4000+Math.random()*5000); },
-  chime(){ if(!this.ctx) return; const t = this.ctx.currentTime+.05; this.note(1046.5,t,.6); this.note(1318.5,t+.18,.5); },
-  toggle(){ if (!this.ctx && !this.init()) return; const t = this.ctx.currentTime; this.on = !this.on;
-    if (this.on){ this.ctx.resume(); this.master.gain.cancelScheduledValues(t); this.master.gain.setTargetAtTime(.9,t,1.2); this.phrase(); }
-    else { this.master.gain.cancelScheduledValues(t); this.master.gain.setTargetAtTime(0,t,.6); clearTimeout(this.timer); }
-    document.body.classList.toggle('playing', this.on); document.getElementById('soundLabel').textContent = this.on ? '潮騒を止める' : '潮騒';
-    document.getElementById('heroSound').textContent = this.on ? '潮騒を止める' : '潮騒を聴く'; document.getElementById('soundBtn').setAttribute('aria-pressed', this.on); }
+  chime(){ if(!this.ctx||season!=='sea') return; const t = this.ctx.currentTime+.05; this.note(1046.5,t,.6); this.note(1318.5,t+.18,.5); },
+  toggle(){if(!this.ctx&&!this.init())return;const t=this.ctx.currentTime;this.on=!this.on;
+    this.master.gain.cancelScheduledValues(t);
+    if(this.on){this.ctx.resume();this.master.gain.setTargetAtTime(.9,t,.35);this.switchScene()}
+    else{this.master.gain.setTargetAtTime(0,t,.18);this.stopScene()}
+    this.labels();
+  }
 };
 document.getElementById('soundBtn').onclick = () => audio.toggle();
 document.getElementById('heroSound').onclick = () => audio.toggle();
 
+const seasonSelect=document.getElementById('seasonSelect');
+seasonSelect.addEventListener('change',()=>setSeason(seasonSelect.value));
+try{const saved=localStorage.getItem('shiosai-season');if(saved&&themes[saved])seasonSelect.value=saved}catch(e){}
+setSeason(seasonSelect.value);
 renderList();
 </script>
 </body>
