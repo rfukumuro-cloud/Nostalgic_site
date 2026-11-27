@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>潮騒の手紙 ― あの夏の思い出が、波にのってとどく場所</title>
 <meta name="author" content="おりんりん">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#f7f0e3; --paper2:#fbf7ef; --ink:#3b3a36; --ink-soft:#6d6a62;
   --sea:#4a7b88; --sea-deep:#24404b; --dusk:#e8bfae; --sun:#f3c58f; --line:#d9cdb8;
-  --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP","BIZ UDPMincho",serif;
+  --mincho:"Klee One","Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP","BIZ UDPMincho",serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -150,6 +153,13 @@ body[data-season="autumn"] .sun,body[data-season="festival"] .sun{display:none}
 body[data-season="summer"] .sun{top:24%;left:26%}
 @media(max-width:720px){nav{gap:6px}.logo small{display:none}.logo{font-size:13px;letter-spacing:.1em}.season-switch{max-width:108px;padding:4px;font-size:11px}.sound-btn{padding:4px 8px;font-size:11px;letter-spacing:0}header{gap:6px}}
 @media(prefers-reduced-motion:reduce){.hero-title,.hero-sub,.hero-lead{animation:none;opacity:1}}
+/* 手紙のような柔らかな筆致 */
+body{font-weight:400;letter-spacing:.045em}
+.logo,.hero-title,.sec-head h2,.letter h3,.vertical h3{font-weight:600}
+.letter .excerpt{font-size:14px;line-height:1.95}
+.vertical{font-size:17px}
+.hero-title{letter-spacing:.25em}
+button,input,textarea,select{font-family:inherit}
 </style>
 </head>
 <body>
