@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>潮騒の手紙 ― あの夏の思い出が、波にのってとどく場所</title>
+<style>
+:root{
+  --paper:#f7f0e3; --paper2:#fbf7ef; --ink:#3b3a36; --ink-soft:#6d6a62;
+  --sea:#4a7b88; --sea-deep:#24404b; --dusk:#e8bfae; --sun:#f3c58f; --line:#d9cdb8;
+  --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP","BIZ UDPMincho",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--mincho);color:var(--ink);background:var(--paper);line-height:2;letter-spacing:.06em;overflow-x:hidden}
+/* フィルムの粒子 */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.13;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .2  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+
+/* ヘッダー */
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;transition:background .6s,box-shadow .6s}
+header.scrolled{background:rgba(247,240,227,.86);backdrop-filter:blur(6px);box-shadow:0 1px 0 var(--line)}
+.logo{font-size:17px;letter-spacing:.3em;text-decoration:none}
+.logo small{font-size:10px;letter-spacing:.2em;color:var(--ink-soft);margin-left:10px}
+nav{display:flex;gap:26px;align-items:center;font-size:13px}
+nav a{text-decoration:none;opacity:.8}
+nav a:hover{opacity:1}
+.sound-btn{border:1px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:4px 14px;font-size:12px;letter-spacing:.15em;display:flex;align-items:center;gap:8px}
+.sound-btn .bars{display:inline-flex;gap:2px;align-items:flex-end;height:10px}
+.sound-btn .bars i{width:2px;height:3px;background:currentColor;display:block}
+.playing .sound-btn .bars i{animation:bar 1.2s ease-in-out infinite}
+.playing .sound-btn .bars i:nth-child(2){animation-delay:.3s}
+.playing .sound-btn .bars i:nth-child(3){animation-delay:.6s}
+@keyframes bar{0%,100%{height:3px}50%{height:10px}}
+@media(max-width:720px){nav a{display:none}header{padding:12px 16px}}
+
+/* ヒーロー */
+.hero{position:relative;height:100vh;min-height:560px;overflow:hidden;
+  background:linear-gradient(180deg,#b9c9d3 0%,#dccfcf 30%,#efd2bf 52%,#f4d9b8 62%,#9fbcc4 62.2%,#5f8f9b 100%)}
+.sun{position:absolute;left:58%;top:62%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;
+  background:radial-gradient(circle,#fff3d6 0%,#f7d29a 45%,rgba(247,200,140,0) 72%);filter:blur(1px);animation:sunbreath 9s ease-in-out infinite}
+@keyframes sunbreath{50%{transform:scale(1.06);opacity:.9}}
+.cloud{position:absolute;border-radius:50%;background:rgba(255,248,240,.55);filter:blur(18px)}
+#sea{position:absolute;left:0;top:0;width:100%;height:100%}
+.hero-title{position:absolute;right:11%;top:16%;writing-mode:vertical-rl;font-size:clamp(34px,5.4vw,64px);
+  letter-spacing:.35em;color:#3d4a50;font-weight:400;opacity:0;animation:rise 3.2s 0.6s ease forwards;text-shadow:0 0 30px rgba(255,245,230,.6)}
+.hero-sub{position:absolute;right:calc(11% + clamp(60px,8vw,110px));top:22%;writing-mode:vertical-rl;font-size:clamp(13px,1.4vw,16px);
+  letter-spacing:.4em;color:#55605f;line-height:2.4;opacity:0;animation:rise 3s 1.8s ease forwards}
+.hero-lead{position:absolute;left:8%;bottom:14%;color:#f4efe6;font-size:14px;letter-spacing:.25em;line-height:2.4;opacity:0;animation:rise 3s 2.6s ease forwards}
+.hero-lead button{margin-top:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.6);color:#fff;padding:10px 26px;border-radius:999px;letter-spacing:.3em;font-size:13px;backdrop-filter:blur(3px);transition:background .4s}
+.hero-lead button:hover{background:rgba(255,255,255,.25)}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);color:#eef3f2;font-size:11px;letter-spacing:.4em;opacity:.8;
+  writing-mode:vertical-rl;animation:drift 3s ease-in-out infinite}
+@keyframes rise{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes drift{50%{transform:translate(-50%,8px);opacity:.4}}
+.floating-word{position:absolute;color:rgba(255,255,255,.75);font-size:13px;letter-spacing:.3em;pointer-events:none;white-space:nowrap;opacity:0}
+
+/* セクション共通 */
+section{position:relative}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.sec-head{text-align:center;padding:120px 0 56px}
+.sec-head .en{font-size:11px;letter-spacing:.5em;color:var(--sea);display:block;margin-bottom:14px}
+.sec-head h2{font-weight:400;font-size:clamp(22px,2.6vw,30px);letter-spacing:.3em}
+.sec-head p{margin-top:18px;color:var(--ink-soft);font-size:14px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 1.6s ease,transform 1.6s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* 絞り込み */
+.chips{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:48px}
+.chip{border:1px solid var(--line);background:transparent;padding:6px 18px;border-radius:999px;font-size:13px;color:var(--ink-soft);letter-spacing:.2em;transition:all .4s}
+.chip.active,.chip:hover{background:var(--sea);border-color:var(--sea);color:#fff}
+
+/* 手紙カード */
+.letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:44px 34px;padding-bottom:40px}
+.letter{background:var(--paper2);padding:14px 14px 20px;box-shadow:0 1px 2px rgba(60,50,30,.08),0 12px 28px -14px rgba(60,50,30,.35);
+  cursor:pointer;transition:transform .8s cubic-bezier(.2,.7,.2,1),box-shadow .8s;position:relative}
+.letter:hover{transform:rotate(0deg) translateY(-6px)!important;box-shadow:0 2px 4px rgba(60,50,30,.08),0 24px 40px -18px rgba(60,50,30,.45)}
+.letter .scene{display:block;width:100%;aspect-ratio:16/10;filter:saturate(.75) sepia(.18)}
+.letter .year{position:absolute;top:22px;right:24px;color:rgba(255,255,255,.92);font-size:13px;letter-spacing:.25em;text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.letter h3{font-weight:400;font-size:17px;margin:16px 4px 6px;letter-spacing:.12em;line-height:1.7}
+.letter .excerpt{font-size:13px;color:var(--ink-soft);line-height:2;margin:0 4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.letter .meta{display:flex;justify-content:space-between;align-items:center;margin:14px 4px 0;font-size:11px;color:#9a9385;letter-spacing:.15em}
+.empty{text-align:center;color:var(--ink-soft);padding:40px 0 80px;font-size:14px}
+
+/* 手紙を読む */
+.reader{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:rgba(36,64,75,.55);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .8s}
+.reader.open{opacity:1;pointer-events:auto}
+.sheet{position:relative;background:var(--paper2);max-width:880px;width:100%;max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.5);transform:translateY(20px) rotate(-.6deg);transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.reader.open .sheet{transform:none}
+.sheet .close{position:absolute;top:10px;right:14px;border:none;background:none;font-size:26px;color:var(--ink-soft);line-height:1;z-index:2}
+.sheet-body{overflow-x:auto;overflow-y:hidden;padding:56px 48px 30px;direction:rtl}
+.vertical{direction:ltr;writing-mode:vertical-rl;height:min(56vh,440px);font-size:16px;line-height:2.5;letter-spacing:.18em;
+  background-image:repeating-linear-gradient(to left,transparent 0,transparent calc(2.5em - 1px),rgba(180,160,130,.28) calc(2.5em - 1px),rgba(180,160,130,.28) 2.5em);
+  padding-left:1em;display:inline-block}
+.vertical h3{font-weight:400;font-size:22px;margin-left:1.4em;letter-spacing:.25em}
+.vertical .when{color:var(--sea);font-size:13px;margin-left:1.2em}
+.vertical .sign{color:var(--ink-soft);font-size:14px;margin-right:2em;text-align:end}
+.sheet-foot{display:flex;justify-content:space-between;align-items:center;padding:16px 30px 22px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink-soft)}
+.echo-btn{border:1px solid var(--sea);color:var(--sea);background:transparent;border-radius:999px;padding:6px 20px;letter-spacing:.2em;font-size:13px;transition:all .5s}
+.echo-btn.done{background:var(--sea);color:#fff}
+
+/* 手紙を流す */
+.send{background:linear-gradient(180deg,var(--paper) 0%,#c9d6d6 18%,#5d8794 55%,var(--sea-deep) 100%);color:#f2efe8;padding-bottom:120px;overflow:hidden}
+.send .sec-head h2,.send .sec-head p{color:#2f3c40}
+.send .sec-head .en{color:#2f5561}
+form{max-width:620px;margin:0 auto;padding:44px 40px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(4px)}
+.field{margin-bottom:28px}
+.field label{display:block;font-size:12px;letter-spacing:.3em;margin-bottom:6px;opacity:.85}
+.field label .req{font-size:10px;margin-left:8px;opacity:.7}
+.field input,.field select,.field textarea{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.5);color:#fff;
+  font-family:inherit;font-size:15px;padding:8px 2px;letter-spacing:.1em;outline:none}
+.field select option{color:var(--ink)}
+.field textarea{min-height:170px;line-height:2;resize:vertical;border:1px solid rgba(255,255,255,.35);padding:12px}
+.field input:focus,.field textarea:focus{border-color:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.count{text-align:right;font-size:11px;opacity:.7}
+.note{font-size:12px;opacity:.75;line-height:1.9;margin-bottom:24px}
+.submit{display:block;margin:10px auto 0;background:#f2efe8;color:var(--sea-deep);border:none;padding:13px 46px;border-radius:999px;letter-spacing:.35em;font-size:14px;transition:transform .4s}
+.submit:hover{transform:translateY(-2px)}
+.err{color:#ffd9c7;font-size:12px;margin-top:4px;min-height:1em}
+.bottle{position:absolute;left:50%;bottom:40px;width:70px;opacity:0;pointer-events:none}
+.bottle.go{animation:float-away 6s ease-in forwards}
+@keyframes float-away{0%{opacity:0;transform:translate(-50%,0) rotate(-8deg)}15%{opacity:1}50%{transform:translate(10%,-30px) rotate(6deg)}
+  100%{opacity:0;transform:translate(260%,-90px) rotate(-4deg) scale(.4)}}
+.thanks{max-width:620px;margin:0 auto;text-align:center;padding:60px 20px;display:none;line-height:2.6;letter-spacing:.25em}
+.thanks button{margin-top:26px;background:transparent;border:1px solid rgba(255,255,255,.6);color:#fff;padding:8px 26px;border-radius:999px;letter-spacing:.25em}
+
+/* このサイトについて */
+.about{background:var(--sea-deep);color:#e9e6de;padding:40px 0 140px}
+.about .poem{writing-mode:vertical-rl;margin:0 auto;height:380px;font-size:16px;line-height:2.8;letter-spacing:.3em;max-width:100%;overflow-x:auto}
+footer{background:#1b3038;color:#9fb1b4;text-align:center;font-size:11px;letter-spacing:.3em;padding:36px 0 46px;line-height:2.4}
+footer .mock{display:inline-block;margin-top:8px;border:1px solid #5b7378;padding:0 10px;font-size:10px}
+</style>
+</head>
+<body>
+
+<header id="hd">
+  <a class="logo" href="#top">潮騒の手紙<small>SHIOSAI NO TEGAMI</small></a>
+  <nav>
+    <a href="#letters">流れ着いた手紙</a>
+    <a href="#send">手紙を流す</a>
+    <a href="#about">このサイトについて</a>
+    <button class="sound-btn" id="soundBtn" aria-pressed="false"><span class="bars"><i></i><i></i><i></i></span><span id="soundLabel">潮騒</span></button>
+  </nav>
+</header>
+
+<!-- ① トップ -->
+<section class="hero" id="top">
+  <div class="cloud" style="width:420px;height:90px;left:6%;top:14%"></div>
+  <div class="cloud" style="width:300px;height:70px;left:46%;top:24%"></div>
+  <div class="cloud" style="width:520px;height:110px;left:62%;top:6%"></div>
+  <div class="sun"></div>
+  <canvas id="sea"></canvas>
+  <h1 class="hero-title">あの夏の、潮騒</h1>
+  <p class="hero-sub">遠いだれかの思い出が<br>波にのって、とどきます。</p>
+  <div class="hero-lead">
+    目を閉じて、耳をすませてください。<br>
+    あの日の風が、まだここに残っています。<br>
+    <button id="heroSound">潮騒を聴く</button>
+  </div>
+  <div class="scroll-hint">手紙をひろう</div>
+</section>
+
+<!-- ② 流れ着いた手紙（一覧） -->
+<section id="letters">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="en">LETTERS FROM THE SHORE</span>
+      <h2>流れ着いた手紙</h2>
+      <p>知らないだれかの夏が、あなたの浜辺に届いています。</p>
+    </div>
+    <div class="chips reveal" id="chips"></div>
+    <div class="letters" id="list"></div>
+  </div>
+</section>
+
+<!-- ③ 手紙を流す（投稿） -->
+<section class="send" id="send">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="en">SEND YOUR SUMMER</span>
+      <h2>手紙を流す</h2>
+      <p>あなたの「あの夏」を、瓶に詰めて海へ。</p>
+    </div>
+    <form id="form" class="reveal" novalidate>
+      <p class="note">名前は書かなくてかまいません。届いた手紙は、ひとつずつ読んでから浜辺に並べます。</p>
+      <div class="field"><label>題名<span class="req">必須</span></label><input name="subject" maxlength="40" placeholder="例）祖母の家の、縁側で"><div class="err"></div></div>
+      <div class="row2">
+        <div class="field"><label>いつの夏</label><select name="memory_year" id="yearSel"></select></div>
+        <div class="field"><label>どんな場所</label><select name="contents_type" id="catSel"></select></div>
+      </div>
+      <div class="field"><label>思い出<span class="req">必須</span></label><textarea name="contents" maxlength="400" placeholder="あの日の空の色、聞こえていた音、隣にいた人のこと……"></textarea><div class="count"><span id="cnt">0</span> / 400</div><div class="err"></div></div>
+      <div class="field"><label>ペンネーム</label><input name="pen_name" maxlength="20" placeholder="空欄なら「名もない旅人」になります"></div>
+      <button class="submit" type="submit">海へ流す</button>
+    </form>
+    <div class="thanks" id="thanks">
+      瓶に詰めて、海へ流しました。<br>
+      いつか、どこかの浜辺で<br>
+      だれかがひろってくれますように。<br>
+      <button id="again">もう一通、書く</button>
+    </div>
+  </div>
+  <svg class="bottle" id="bottle" viewBox="0 0 70 140"><defs><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#cfe6e3" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity=".8"/><stop offset="1" stop-color="#a9cfcb" stop-opacity=".5"/></linearGradient></defs>
+    <rect x="27" y="4" width="16" height="12" rx="3" fill="#b08a62"/><path d="M28 16h14v18c0 6 14 12 14 26v66a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10V60c0-14 14-20 14-26z" fill="url(#gl)" stroke="#fff" stroke-opacity=".7"/>
+    <rect x="24" y="66" width="22" height="44" rx="2" fill="#f4ead6" transform="rotate(-6 35 88)"/></svg>
+</section>
+
+<!-- ④ このサイトについて -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="en" style="color:#9fc0c6">ABOUT</span><h2 style="color:#efebe2">このサイトについて</h2></div>
+    <p class="poem reveal">
+      だれにでも、ひとつは<br>
+      胸の奥でずっと鳴っている夏があります。<br>
+      それはとても小さな音で<br>
+      ふだんは、自分にも聞こえないくらい。<br>
+      けれど、だれかの思い出にふれたとき<br>
+      その音は、ふっと大きくなる。<br>
+      ここは、そんな音を<br>
+      遠くの人へ、そっと届けるための浜辺です。
+    </p>
+  </div>
+</section>
+
+<footer>
+  波の音が、やむまで。<br>© 潮騒の手紙<br><span class="mock">試作版 ― 表示しているのは見本の手紙です</span>
+</footer>
+
+<!-- 手紙を読む（詳細） -->
+<div class="reader" id="reader" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <button class="close" id="closeReader" aria-label="閉じる">×</button>
+    <div class="sheet-body"><div class="vertical" id="readerBody"></div></div>
+    <div class="sheet-foot"><span id="readerDate"></span><button class="echo-btn" id="echoBtn">胸にひびいた　<span id="echoCnt">0</span></button></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   見本データ（Kuroco の Topics::list / details と同じ形）
+   本番では api.* の中身を実APIの呼び出しに差し替えるだけ。
+   ※ 拡張項目は use_ext_slug=true 前提のスラッグ名（memory_year / pen_name / echo_cnt）。
+     実キー・カテゴリID・APIパスはフェーズ2・3で確定して CONFIG に書き戻す。
+   ========================================================= */
+const CONFIG = { apiBase: "（未確定）", listPath: "（未確定）/letters", sendPath: "（未確定）/letters/send" };
+
+const CATEGORIES = [
+  { topics_category_id: 1, category_nm: "海辺" },
+  { topics_category_id: 2, category_nm: "田舎の家" },
+  { topics_category_id: 3, category_nm: "夏祭り" },
+  { topics_category_id: 4, category_nm: "帰り道" }
+];
+
+const MOCK_TOPICS = [
+  { topics_id: 101, subject: "祖母の家の、縁側で", ymd: "2026-08-02", contents_type: 2, contents_type_nm: "田舎の家",
+    contents: "蚊取り線香の渦が半分ほど灰になったころ、祖母は決まって、井戸水で冷やしたスイカを切ってくれた。\n種を庭へ飛ばす競争をして、弟はいつも勝てなかった。\nあの縁側はもう取り壊されてしまったけれど、風鈴の音を聞くと、いまでも足の裏に、板のひんやりした感じが戻ってくる。",
+    memory_year: "1994", pen_name: "小さな麦わら帽子", echo_cnt: 128 },
+  { topics_id: 102, subject: "最終のバスを待つあいだ", ymd: "2026-07-28", contents_type: 4, contents_type_nm: "帰り道",
+    contents: "海水浴の帰り、塩でぱりぱりになった髪のまま、停留所のベンチでアイスを半分こした。\n日が沈むのが惜しくて、だれも「帰ろう」と言わなかった。\nあのとき隣にいた人の名前を、わたしはもう思い出せない。けれど、ソーダ味だったことだけは、ちゃんと覚えている。",
+    memory_year: "2003", pen_name: "ひぐらし", echo_cnt: 214 },
+  { topics_id: 103, subject: "線香花火の、最後のひとしずく", ymd: "2026-07-21", contents_type: 3, contents_type_nm: "夏祭り",
+    contents: "祭りのあと、みんなで神社の裏に集まって、線香花火の長持ち競争をした。\n火の玉がふるえて、ぽとりと落ちる、その一瞬だけ、だれも何もしゃべらなかった。\nあれから何度も夏が来たのに、あんなに静かな夜は、あの一度きりだった気がする。",
+    memory_year: "1988", pen_name: "橙", echo_cnt: 96 },
+  { topics_id: 104, subject: "父の自転車のうしろ", ymd: "2026-07-15", contents_type: 1, contents_type_nm: "海辺",
+    contents: "防波堤沿いの道を、父の自転車の荷台に乗って走った。\n背中ごしに聞こえる下手な鼻歌が、波の音とまざっていた。\n父はもういないけれど、海沿いを歩くと、あのでたらめなメロディーが、どこか遠くでまだ鳴っている気がする。",
+    memory_year: "1979", pen_name: "うみねこ", echo_cnt: 301 },
+  { topics_id: 105, subject: "灯台の見える部屋で", ymd: "2026-07-09", contents_type: 1, contents_type_nm: "海辺",
+    contents: "夜、窓を開けると、灯台の光がゆっくりと部屋の壁をなでていった。\n眠れないわたしの耳に、母は巻き貝を当てて「ほら、海がしゃべってる」と言った。\nいまでも眠れない夜は、目を閉じて、あの光が一周するのを数えている。",
+    memory_year: "2011", pen_name: "名もない旅人", echo_cnt: 77 },
+  { topics_id: 106, subject: "神社の石段と、いちごのシロップ", ymd: "2026-07-02", contents_type: 3, contents_type_nm: "夏祭り",
+    contents: "浴衣のすそを気にしながら、石段のいちばん上に座って、かき氷を食べた。\nシロップで赤くなった舌を見せあって笑った友だちは、その秋に転校していった。\n提灯の明かりがにじんで見えたのは、たぶん、氷のせいだけじゃなかった。",
+    memory_year: "1999", pen_name: "金魚すくい名人", echo_cnt: 152 },
+  { topics_id: 107, subject: "入道雲を追いかけた日", ymd: "2026-06-26", contents_type: 2, contents_type_nm: "田舎の家",
+    contents: "田んぼのあぜ道を、入道雲に向かってどこまでも走った。\n追いつけるはずがないのに、あの日は本気で、雲のふもとまで行けると思っていた。\n夕立にずぶぬれになって帰ると、台所から麦茶の匂いがした。",
+    memory_year: "1985", pen_name: "あぜ道", echo_cnt: 63 },
+  { topics_id: 108, subject: "夕焼けの踏切", ymd: "2026-06-18", contents_type: 4, contents_type_nm: "帰り道",
+    contents: "部活の帰り、いつも同じ踏切で電車が通りすぎるのを待った。\nカン、カン、という音と、ひぐらしの声と、遠くの夕焼け。\nなにも特別なことは起きなかったのに、いま思えば、あれがいちばん幸せな時間だったのかもしれない。",
+    memory_year: "2007", pen_name: "第二踏切", echo_cnt: 189 }
+];
+
+/* --- APIクライアント層（いまは見本データを返す） --- */
+const api = {
+  async listLetters({ category = 0, pageID = 1, cnt = 24 } = {}) {
+    const rows = MOCK_TOPICS.filter(t => !category || t.contents_type === category);
+    return { errors: [], messages: [], list: rows.slice((pageID-1)*cnt, pageID*cnt),
+      pageInfo: { totalCnt: rows.length, perPage: cnt, totalPageCnt: Math.max(1, Math.ceil(rows.length/cnt)), pageNo: pageID,
+        firstIndex: rows.length ? (pageID-1)*cnt+1 : 0, lastIndex: Math.min(pageID*cnt, rows.length) } };
+  },
+  async letterDetails(id) { return { errors: [], details: MOCK_TOPICS.find(t => t.topics_id === id) }; },
+  async sendLetter(body) { return { errors: [], messages: ["受け付けました（見本）"], id: Date.now() }; },
+  async echo(id) { const t = MOCK_TOPICS.find(x => x.topics_id === id); t.echo_cnt++; return { errors: [] }; }
+};
+
+/* --- 小さな風景画（写真の代わり） --- */
+let sid = 0;
+function scene(cat) {
+  const i = ++sid;
+  if (cat === 1) return '<svg class="scene" viewBox="0 0 160 100"><defs><linearGradient id="s'+i+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8cbd4"/><stop offset="1" stop-color="#f2d6bd"/></linearGradient></defs><rect width="160" height="62" fill="url(#s'+i+')"/><circle cx="104" cy="60" r="11" fill="#f9dfb3"/><rect y="62" width="160" height="38" fill="#7aa2ab"/><path d="M0 70 Q20 67 40 70 T80 70 T120 70 T160 70" stroke="#d9ecea" stroke-width=".8" fill="none" opacity=".7"/><path d="M0 82 Q20 78 40 82 T80 82 T120 82 T160 82" stroke="#e6f2ef" stroke-width="1" fill="none" opacity=".6"/><rect x="100" y="64" width="8" height="1" fill="#fbe7c4" opacity=".8"/><rect x="98" y="68" width="12" height="1" fill="#fbe7c4" opacity=".6"/><path d="M24 52 l3-14 l3 14z" fill="#e9e3d8"/><rect x="25.5" y="36" width="3" height="3" fill="#f6d79c"/></svg>';
+  if (cat === 2) return '<svg class="scene" viewBox="0 0 160 100"><defs><linearGradient id="s'+i+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8c6d6"/><stop offset="1" stop-color="#e8eadb"/></linearGradient></defs><rect width="160" height="100" fill="url(#s'+i+')"/><ellipse cx="60" cy="34" rx="34" ry="20" fill="#fbf7ef" opacity=".9"/><ellipse cx="82" cy="28" rx="22" ry="16" fill="#fff" opacity=".85"/><path d="M0 70 Q40 52 80 64 T160 58 V100 H0z" fill="#8fae86"/><path d="M0 82 Q50 72 100 80 T160 76 V100 H0z" fill="#6f9468"/><path d="M96 66 l22-14 l22 14z" fill="#5d5650"/><rect x="100" y="66" width="36" height="16" fill="#cbb9a0"/><rect x="104" y="70" width="8" height="12" fill="#7d6e60"/></svg>';
+  if (cat === 3) return '<svg class="scene" viewBox="0 0 160 100"><defs><linearGradient id="s'+i+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26394a"/><stop offset="1" stop-color="#4e5873"/></linearGradient><radialGradient id="l'+i+'"><stop offset="0" stop-color="#ffe1a8"/><stop offset="1" stop-color="#e88a5a" stop-opacity="0"/></radialGradient></defs><rect width="160" height="100" fill="url(#s'+i+')"/><g fill="#f6c27e" opacity=".9">'+Array.from({length:14},(_,k)=>{const a=k/14*Math.PI*2;return '<circle cx="'+(116+Math.cos(a)*16).toFixed(1)+'" cy="'+(26+Math.sin(a)*16).toFixed(1)+'" r="1.2"/>'}).join('')+'</g><path d="M0 44 Q80 58 160 44" stroke="#3a3a3a" stroke-width=".6" fill="none"/>'+[18,42,66,90,114,138].map(x=>'<circle cx="'+x+'" cy="'+(50+Math.sin(x/25)*2).toFixed(1)+'" r="9" fill="url(#l'+i+')"/><ellipse cx="'+x+'" cy="'+(50+Math.sin(x/25)*2).toFixed(1)+'" rx="3.4" ry="4.4" fill="#f3a167"/>').join('')+'<rect y="80" width="160" height="20" fill="#1c2632"/><path d="M60 80 v-14 h40 v14" fill="#7a2f2a" opacity=".85"/></svg>';
+  return '<svg class="scene" viewBox="0 0 160 100"><defs><linearGradient id="s'+i+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7b49a"/><stop offset=".7" stop-color="#f4d3a8"/></linearGradient></defs><rect width="160" height="100" fill="url(#s'+i+')"/><circle cx="48" cy="62" r="13" fill="#fbe2b8" opacity=".9"/><path d="M0 74 H160 V100 H0z" fill="#6e5e58"/><g stroke="#3f3634" stroke-width="1.6"><line x1="30" y1="20" x2="30" y2="74"/><line x1="112" y1="14" x2="112" y2="74"/></g><g stroke="#3f3634" stroke-width=".5" fill="none"><path d="M30 24 Q71 36 112 18"/><path d="M30 28 Q71 40 112 22"/><path d="M0 30 Q15 34 30 24"/><path d="M112 18 Q136 26 160 22"/></g><rect x="130" y="52" width="2" height="22" fill="#3f3634"/><circle cx="131" cy="50" r="5" fill="#3f3634"/></svg>';
+}
+
+/* --- 一覧を描く --- */
+const listEl = document.getElementById('list');
+let currentCat = 0;
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function renderList() {
+  const res = await api.listLetters({ category: currentCat });
+  if (!res.list.length) { listEl.innerHTML = '<p class="empty">この浜辺には、まだ手紙が流れ着いていません。</p>'; return; }
+  listEl.innerHTML = res.list.map((t, n) =>
+    '<article class="letter reveal" data-id="'+t.topics_id+'" style="transform:rotate('+((n%3-1)*0.8)+'deg)">'+scene(t.contents_type)+
+    '<span class="year">'+esc(t.memory_year)+'年の夏</span>'+
+    '<h3>'+esc(t.subject)+'</h3><p class="excerpt">'+esc(t.contents.replace(/\n/g,''))+'</p>'+
+    '<div class="meta"><span>'+esc(t.contents_type_nm)+'　／　'+esc(t.pen_name)+'</span><span>ひびいた '+t.echo_cnt+'</span></div></article>').join('');
+  listEl.querySelectorAll('.letter').forEach((el,k) => { el.style.transitionDelay = (k%4)*0.15+'s'; io.observe(el); el.onclick = () => openReader(+el.dataset.id); });
+}
+const chips = document.getElementById('chips');
+chips.innerHTML = [{topics_category_id:0,category_nm:"すべて"}, ...CATEGORIES].map(c => '<button class="chip'+(c.topics_category_id===0?' active':'')+'" data-c="'+c.topics_category_id+'">'+c.category_nm+'</button>').join('');
+chips.onclick = e => { const b = e.target.closest('.chip'); if (!b) return; chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); b.classList.add('active'); currentCat = +b.dataset.c; renderList(); };
+
+/* --- 手紙を読む --- */
+const reader = document.getElementById('reader'); let openId = null; const echoed = new Set();
+async function openReader(id) {
+  const { details: t } = await api.letterDetails(id); openId = id;
+  document.getElementById('readerBody').innerHTML = '<h3>'+esc(t.subject)+'</h3><p class="when">'+esc(t.memory_year)+'年の夏　'+esc(t.contents_type_nm)+'にて</p>'+
+    esc(t.contents).split('\n').map(p=>'<p>'+p+'</p>').join('')+'<p class="sign">'+esc(t.pen_name)+'</p>';
+  document.getElementById('readerDate').textContent = t.ymd.replace(/-/g,'.')+' に流れ着きました';
+  document.getElementById('echoCnt').textContent = t.echo_cnt;
+  document.getElementById('echoBtn').classList.toggle('done', echoed.has(id));
+  reader.classList.add('open'); reader.setAttribute('aria-hidden','false');
+  document.querySelector('.sheet-body').scrollLeft = 0;
+  if (audio.on) audio.chime();
+}
+function closeReader(){ reader.classList.remove('open'); reader.setAttribute('aria-hidden','true'); }
+document.getElementById('closeReader').onclick = closeReader;
+reader.onclick = e => { if (e.target === reader) closeReader(); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReader(); });
+document.getElementById('echoBtn').onclick = async () => {
+  if (echoed.has(openId)) return; await api.echo(openId); echoed.add(openId);
+  const t = MOCK_TOPICS.find(x=>x.topics_id===openId); document.getElementById('echoCnt').textContent = t.echo_cnt;
+  document.getElementById('echoBtn').classList.add('done'); renderList(); if (audio.on) audio.chime();
+};
+
+/* --- 手紙を流す --- */
+const yearSel = document.getElementById('yearSel');
+yearSel.innerHTML = '<option value="">おぼえていない</option>' + Array.from({length: 2026-1960+1}, (_,k)=>2026-k).map(y=>'<option value="'+y+'">'+y+'年</option>').join('');
+document.getElementById('catSel').innerHTML = CATEGORIES.map(c=>'<option value="'+c.topics_category_id+'">'+c.category_nm+'</option>').join('');
+const form = document.getElementById('form');
+form.contents.oninput = () => document.getElementById('cnt').textContent = form.contents.value.length;
+form.onsubmit = async e => {
+  e.preventDefault(); let ok = true;
+  [['subject','題名を書いてください'],['contents','思い出を書いてください']].forEach(([n,m]) => {
+    const f = form[n], er = f.parentElement.querySelector('.err'); if (!f.value.trim()) { er.textContent = m; ok = false; } else er.textContent = ''; });
+  if (!ok) return;
+  await api.sendLetter({ subject: form.subject.value, contents: form.contents.value, memory_year: form.memory_year.value,
+    contents_type: +form.contents_type.value, pen_name: form.pen_name.value || '名もない旅人' });
+  const b = document.getElementById('bottle'); b.classList.remove('go'); void b.offsetWidth; b.classList.add('go');
+  form.style.display = 'none'; document.getElementById('thanks').style.display = 'block'; if (audio.on) audio.chime();
+};
+document.getElementById('again').onclick = () => { form.reset(); document.getElementById('cnt').textContent = 0; form.style.display = ''; document.getElementById('thanks').style.display = 'none'; };
+
+/* --- ふわっと現れる演出 --- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+const hd = document.getElementById('hd');
+addEventListener('scroll', () => hd.classList.toggle('scrolled', scrollY > innerHeight * .6), { passive: true });
+
+/* --- 海を描く --- */
+const cv = document.getElementById('sea'), cx = cv.getContext('2d'); let W, H, dpr;
+function fit(){ dpr = Math.min(2, devicePixelRatio||1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W*dpr; cv.height = H*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
+fit(); addEventListener('resize', fit);
+const sparks = Array.from({length: 70}, () => ({ x: Math.random(), y: Math.random(), p: Math.random()*6.28, s: .5+Math.random()*1.5 }));
+const layers = [
+  { c:'rgba(150,186,194,.9)', a:2,  l:.012, sp:.25, o:.000 },
+  { c:'rgba(120,165,176,.9)', a:4,  l:.009, sp:.35, o:.08 },
+  { c:'rgba(94,140,152,.92)', a:7,  l:.007, sp:.45, o:.18 },
+  { c:'rgba(72,116,129,.95)', a:11, l:.005, sp:.55, o:.32 },
+  { c:'rgba(52,92,105,.97)',  a:16, l:.0038,sp:.7,  o:.52 }
+];
+function draw(t){
+  t /= 1000; cx.clearRect(0,0,W,H);
+  const hz = H*.62, sea = H-hz, sunX = W*.58;
+  // 夕日の照り返し
+  for (let k=0;k<26;k++){ const y = hz+4+k*k*.5; if (y>H) break; const w = (14+k*3.2)*(.6+.4*Math.sin(t*1.6+k));
+    cx.fillStyle = 'rgba(255,232,190,'+(.55-k*.018)+')'; cx.fillRect(sunX-w/2+Math.sin(t+k)*6, y, w, 1.4); }
+  layers.forEach((L,i) => {
+    const base = hz + sea*L.o; cx.beginPath(); cx.moveTo(0,H);
+    for (let x=0;x<=W;x+=6){ const y = base + Math.sin(x*L.l + t*L.sp + i)*L.a + Math.sin(x*L.l*2.3 - t*L.sp*1.3)*L.a*.35; cx.lineTo(x,y); }
+    cx.lineTo(W,H); cx.closePath(); cx.fillStyle = L.c; cx.fill();
+    if (i===4){ cx.strokeStyle='rgba(240,248,245,.35)'; cx.lineWidth=1.2; cx.beginPath();
+      for (let x=0;x<=W;x+=6){ const y = base + Math.sin(x*L.l + t*L.sp + i)*L.a + Math.sin(x*L.l*2.3 - t*L.sp*1.3)*L.a*.35; x?cx.lineTo(x,y):cx.moveTo(x,y);} cx.stroke(); }
+  });
+  // 波打ちぎわ
+  const shore = H - 30 - Math.sin(t*.55)*14;
+  cx.fillStyle = 'rgba(236,224,204,.95)'; cx.beginPath(); cx.moveTo(0,H);
+  for (let x=0;x<=W;x+=8) cx.lineTo(x, shore + 10 + Math.sin(x*.004+1)*8); cx.lineTo(W,H); cx.fill();
+  cx.fillStyle = 'rgba(255,255,255,'+(.35+.25*Math.sin(t*.55))+')'; cx.beginPath(); cx.moveTo(0,H);
+  for (let x=0;x<=W;x+=8) cx.lineTo(x, shore + Math.sin(x*.012+t)*3 + Math.sin(x*.004+1)*8); cx.lineTo(W, shore+30); cx.lineTo(0, shore+30); cx.fill();
+  // きらめき
+  sparks.forEach(s => { const a = Math.max(0, Math.sin(t*s.s + s.p)); if (a<.6) return; const y = hz + 4 + s.y*s.y*sea*.55, x = s.x*W;
+    cx.fillStyle = 'rgba(255,250,235,'+((a-.6)*2)+')'; cx.fillRect(x, y, 2+s.y*3, 1); });
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+/* --- ふわりと漂うことば --- */
+const words = ["ひぐらし","麦茶","風鈴","夕立","ソーダ味","線香花火","防波堤","ラジオ体操","入道雲","貝殻"];
+const hero = document.querySelector('.hero');
+setInterval(() => { if (scrollY > innerHeight) return; const w = document.createElement('span'); w.className='floating-word'; w.textContent = words[Math.random()*words.length|0];
+  w.style.left = (10+Math.random()*60)+'%'; w.style.top = (66+Math.random()*20)+'%'; hero.appendChild(w);
+  w.animate([{opacity:0,transform:'translateY(0)'},{opacity:.85,offset:.3},{opacity:0,transform:'translateY(-60px)'}],{duration:7000,easing:'ease-out'}).onfinish=()=>w.remove(); }, 2600);
+
+/* --- 潮騒とオルゴール（その場で音を作っています） --- */
+const audio = { on:false, ctx:null, master:null, timer:null,
+  init(){ const C = window.AudioContext||window.webkitAudioContext; if(!C) return false; const ctx = this.ctx = new C();
+    this.master = ctx.createGain(); this.master.gain.value = 0; this.master.connect(ctx.destination);
+    // 波：ノイズ → ローパス → ゆっくり満ち引きする音量
+    const len = ctx.sampleRate*4, buf = ctx.createBuffer(2,len,ctx.sampleRate);
+    for (let ch=0;ch<2;ch++){ const d = buf.getChannelData(ch); let b0=0,b1=0,b2=0;
+      for (let k=0;k<len;k++){ const w = Math.random()*2-1; b0=.99765*b0+w*.0990460; b1=.96300*b1+w*.2965164; b2=.57000*b2+w*1.0526913; d[k]=(b0+b1+b2+w*.1848)*.11; } }
+    const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+    const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value = 700;
+    const wave = ctx.createGain(); wave.gain.value = .45;
+    const lfo = ctx.createOscillator(); lfo.frequency.value = .11; const lfoG = ctx.createGain(); lfoG.gain.value = .38; lfo.connect(lfoG); lfoG.connect(wave.gain);
+    const lfo2 = ctx.createOscillator(); lfo2.frequency.value = .11; const lfo2G = ctx.createGain(); lfo2G.gain.value = 500; lfo2.connect(lfo2G); lfo2G.connect(lp.frequency);
+    src.connect(lp); lp.connect(wave); wave.connect(this.master); src.start(); lfo.start(); lfo2.start();
+    // 遠くのメロディー：やまびこのように残るディレイ
+    this.mel = ctx.createGain(); this.mel.gain.value = .14;
+    const dl = ctx.createDelay(2); dl.delayTime.value = .62; const fb = ctx.createGain(); fb.gain.value = .45; const dlp = ctx.createBiquadFilter(); dlp.type='lowpass'; dlp.frequency.value = 1800;
+    this.mel.connect(this.master); this.mel.connect(dl); dl.connect(dlp); dlp.connect(fb); fb.connect(dl); dlp.connect(this.master);
+    return true; },
+  note(f, at, vol=1){ const ctx = this.ctx, o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+    o.type='sine'; o2.type='sine'; o.frequency.value=f; o2.frequency.value=f*2.01; const g2 = ctx.createGain(); g2.gain.value=.18;
+    g.gain.setValueAtTime(0,at); g.gain.linearRampToValueAtTime(.5*vol,at+.01); g.gain.exponentialRampToValueAtTime(.0008,at+3.2);
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(this.mel); o.start(at); o2.start(at); o.stop(at+3.3); o2.stop(at+3.3); },
+  phrase(){ // ふるさとを思わせる、ヨナ抜き音階のゆるやかなフレーズ
+    const sc = [523.25,587.33,659.25,783.99,880,1046.5]; let i = Math.random()*4|0, at = this.ctx.currentTime+.1;
+    const n = 3+(Math.random()*3|0); for (let k=0;k<n;k++){ this.note(sc[i], at, .7+Math.random()*.3); at += .55+Math.random()*.5; i = Math.max(0,Math.min(sc.length-1, i+[-1,-1,1,1,2,-2][Math.random()*6|0])); }
+    this.timer = setTimeout(()=>this.phrase(), (n*800)+4000+Math.random()*5000); },
+  chime(){ if(!this.ctx) return; const t = this.ctx.currentTime+.05; this.note(1046.5,t,.6); this.note(1318.5,t+.18,.5); },
+  toggle(){ if (!this.ctx && !this.init()) return; const t = this.ctx.currentTime; this.on = !this.on;
+    if (this.on){ this.ctx.resume(); this.master.gain.cancelScheduledValues(t); this.master.gain.setTargetAtTime(.9,t,1.2); this.phrase(); }
+    else { this.master.gain.cancelScheduledValues(t); this.master.gain.setTargetAtTime(0,t,.6); clearTimeout(this.timer); }
+    document.body.classList.toggle('playing', this.on); document.getElementById('soundLabel').textContent = this.on ? '潮騒を止める' : '潮騒';
+    document.getElementById('heroSound').textContent = this.on ? '潮騒を止める' : '潮騒を聴く'; document.getElementById('soundBtn').setAttribute('aria-pressed', this.on); }
+};
+document.getElementById('soundBtn').onclick = () => audio.toggle();
+document.getElementById('heroSound').onclick = () => audio.toggle();
+
+renderList();
+</script>
+</body>
+</html>
